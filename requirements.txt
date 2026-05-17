@@ -1,0 +1,10 @@
+streamlit==1.38.0
+openai==1.61.0
+speechmatics-rt==0.5.3
+speechmatics-batch==0.4.8
+python-dotenv==1.0.1
+langgraph==0.2.60
+langchain-core>=0.3.23,<0.4.0
+pyaudio==0.2.14
+plotly==5.24.0
+pandas==2.2.3

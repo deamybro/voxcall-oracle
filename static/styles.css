@@ -1,0 +1,71 @@
+:root {
+  --oracle-bg: #101820;
+  --oracle-panel: #17212b;
+  --oracle-accent: #2dd4bf;
+  --oracle-accent-2: #f59e0b;
+  --oracle-text: #f8fafc;
+}
+
+.oracle-status {
+  border-left: 4px solid var(--oracle-accent);
+  padding: 0.75rem 1rem;
+  background: rgba(45, 212, 191, 0.08);
+}
+
+.transcript-panel {
+  min-height: 340px;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.transcript-row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.transcript-row:last-child {
+  border-bottom: 0;
+}
+
+.speaker-pill {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 1.65rem;
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0f172a;
+  background: #2dd4bf;
+  text-transform: uppercase;
+}
+
+.speaker-ceo {
+  background: #2dd4bf;
+}
+
+.speaker-cfo {
+  background: #f59e0b;
+}
+
+.speaker-analyst {
+  background: #93c5fd;
+}
+
+.speaker-system {
+  background: #fda4af;
+}
+
+.transcript-text {
+  overflow-wrap: anywhere;
+  line-height: 1.55;
+}
