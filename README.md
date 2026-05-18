@@ -1,56 +1,120 @@
-# VoxCall Oracle - Voice-Powered Earnings Call Trading Agent
+# VoxCall Oracle — Voice-Powered Earnings Call Trading Agent
 
-Real-time voice-first agent that listens to live earnings calls with Speechmatics, analyzes xStock impact with a Featherless finance ensemble, and routes paper or live orders through Kraken CLI.
+> **Live production agent** that listens to earnings calls in real-time, analyzes xStock impact with a Featherless finance ensemble, and executes trades via Kraken CLI.
 
-Deployed on Vultr via Coolify as a production-shaped Streamlit app.
+Deployed on **Streamlit Community Cloud** — free, live, open-source.
 
-Targets: Speechmatics, Kraken PnL + Social, Featherless, Vultr, Agentic Workflows, Multimodal Intelligence, Enterprise Utility.
+---
+
+## Architecture
+
+```
+┌──────────────┐     ┌────────────────┐     ┌──────────────────┐
+│  🎙️ Audio     │────▶│  Speechmatics   │────▶│  Speaker-labeled  │
+│  Input       │     │  RT + Batch     │     │  Transcript       │
+└──────────────┘     │  Diarization    │     └────────┬─────────┘
+                     └────────────────┘              │
+                                                     ▼
+                     ┌────────────────┐     ┌──────────────────┐
+                     │  🪶 Featherless  │◀────│  Ensemble Vote    │
+                     │  3-Model        │     │  sentiment/action │
+                     │  Finance LLMs   │     │  confidence/ticker│
+                     └────────────────┘     └────────┬─────────┘
+                                                     │
+                                                     ▼
+                     ┌────────────────┐     ┌──────────────────┐
+                     │  ⚖️ Risk Gate   │────▶│  🐙 Kraken CLI    │
+                     │  Confidence     │     │  xStock Order     │
+                     │  Threshold      │     │  Paper / Live     │
+                     └────────────────┘     └────────┬─────────┘
+                                                     │
+                                                     ▼
+                                            ┌──────────────────┐
+                                            │  📊 Dashboard     │
+                                            │  PnL + Decisions  │
+                                            │  Voice Readout    │
+                                            └──────────────────┘
+```
+
+## Features
+
+- 🎙️ **Speechmatics** — Real-time microphone transcription + batch audio upload with speaker diarization
+- 🪶 **Featherless** — 3-model finance ensemble (`Llama-Open-Finance-8B`, `finance-chat`, `Fin-o1-8B`) with majority vote
+- 🐙 **Kraken CLI** — xStock paper + live order execution (`kraken paper buy/sell` / `kraken order buy/sell`)
+- ⚖️ **Risk Gate** — Configurable confidence threshold blocks low-signal trades
+- 📊 **Live Dashboard** — Streamlit with dark theme, PnL chart, decision log, model votes, voice readout
+- 🔗 **LangGraph** — Multi-agent workflow: Analyze → Risk Gate → Execute → Explain
+- ☁️ **Streamlit Cloud** — Free deployment with secrets management
+
+## Targets
+
+Speechmatics · Kraken (PnL + Social) · Featherless · Agentic Workflows · Multimodal Intelligence · Enterprise Utility
 
 ## Quick Start
 
 ```bash
 cp .env.example .env
-# fill keys
+# fill in your API keys
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Open the app at `http://localhost:8501`.
+Open `http://localhost:8501`.
 
-## Demo Mode
+## Deploy to Streamlit Community Cloud (Free)
 
-The dashboard works without API keys. Paste or type an earnings-call excerpt in the demo panel and VoxCall Oracle will produce a deterministic paper-trading decision. Add `FEATHERLESS_API_KEY` to use the live finance ensemble.
+1. Push this repo to GitHub.
+2. Go to [share.streamlit.io](https://share.streamlit.io).
+3. Click **New app** → select your repo → branch `main` → file `app.py`.
+4. Under **Advanced settings** → **Secrets**, add your keys:
+   ```toml
+   SPEECHMATICS_API_KEY = "your_key"
+   FEATHERLESS_API_KEY = "your_key"
+   PAPER_MODE = "true"
+   ```
+5. Click **Deploy**. Your app will be live at `https://your-app.streamlit.app`.
 
-Live Speechmatics listening requires `SPEECHMATICS_API_KEY` and compatible microphone/audio streaming support in the runtime. For cloud deployments, upload an earnings-call audio clip in the dashboard to use Speechmatics batch diarization from the server.
+## Docker (Optional)
 
-## Real Integrations
+```bash
+docker compose up --build
+```
 
-- Speechmatics realtime microphone path for local demos.
-- Speechmatics batch diarization path for uploaded audio in cloud deployments.
-- Featherless OpenAI-compatible finance ensemble with configurable model IDs via `FEATHERLESS_MODELS`.
-- Kraken CLI paper mode via `kraken paper buy/sell`.
-- Kraken CLI live xStock mode via `kraken order buy/sell ... --asset-class tokenized_asset`.
-- Streamlit health endpoint at `/_stcore/health` for Coolify.
+## Environment Variables
 
-## Current Local Status
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `SPEECHMATICS_API_KEY` | For live audio | Speechmatics API key for RT + batch |
+| `FEATHERLESS_API_KEY` | For live ensemble | Featherless API key |
+| `KRAKEN_API_KEY` | For PnL audit | Kraken read-only key |
+| `KRAKEN_API_SECRET` | For live trades | Kraken secret |
+| `PAPER_MODE` | No (default: `true`) | Paper trading mode |
+| `TRADE_AMOUNT` | No (default: `0.05`) | Order size |
+| `MIN_TRADE_CONFIDENCE` | No (default: `75`) | Minimum confidence to execute |
+| `FEATHERLESS_MODELS` | No | Comma-separated model IDs |
+| `FEATHERLESS_BASE_URL` | No | Custom Featherless endpoint |
 
-Windows local testing supports the full dashboard, Speechmatics upload transcription, and Featherless live ensemble. Kraken CLI should be validated in WSL, Linux, or the Vultr/Coolify container because the official Kraken CLI installation path does not support native Windows.
+## Live Integrations
 
-## Vultr + Coolify Deployment
+- **Speechmatics**: Real-time microphone path for local; batch diarization for uploaded audio in cloud.
+- **Featherless**: OpenAI-compatible finance ensemble with configurable model IDs.
+- **Kraken CLI**: Paper mode via `kraken paper buy/sell`. Live xStock mode via `kraken order ... --asset-class tokenized_asset`.
 
-See [DEPLOY.md](DEPLOY.md).
+## Kraken Validation
 
-## Submission Assets
+After deployment, run inside the container:
 
-Use [SUBMISSION.md](SUBMISSION.md) for lablab.ai copy, the 2-minute demo video script, tags, and Kraken social engagement posts.
+```bash
+sh scripts/validate_kraken.sh
+```
 
-Live Demo: [your-vultr-url-here]
-GitHub: [link]
-Video: [YouTube link]
+## Submission
+
+See [SUBMISSION.md](SUBMISSION.md) for lablab.ai copy, demo video script, tags, and social posts.
 
 ## Safety
 
-`PAPER_MODE=true` is the default. Leave paper mode enabled for demos and judging. Switch to live execution only after you have reviewed your Kraken CLI authentication, command format, and risk controls.
+`PAPER_MODE=true` is the default. All trades go through the **risk gate** — low-confidence signals are blocked. Switch to live execution only after reviewing your Kraken CLI authentication and risk controls.
 
 ## License
 

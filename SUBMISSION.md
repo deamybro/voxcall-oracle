@@ -8,11 +8,11 @@ VoxCall Oracle is a real-time voice-first trading agent that listens to earnings
 
 VoxCall Oracle turns live earnings-call audio into an enterprise-grade trading workflow. Speechmatics handles real-time transcription and speaker diarization, so management, analysts, and operators are separated in the transcript. Each transcript chunk is sent to a three-model Featherless finance ensemble that votes on sentiment, confidence, ticker, action, and rationale. When confidence crosses the configured threshold, the executor prepares a Kraken CLI xStock order with `PAPER_MODE=true` by default.
 
-The Streamlit dashboard is designed for a live hackathon demo: speaker-colored transcript rows, ensemble decision cards, model vote logs, browser voice readouts, Kraken CLI output, and a paper PnL chart. The app is Docker-ready and deployable on Vultr through Coolify.
+The Streamlit dashboard is a live production app: speaker-colored transcript rows, ensemble decision cards, model vote logs, browser voice readouts, Kraken CLI output, and a paper PnL chart. Deployed free on Streamlit Community Cloud.
 
 ## Tags
 
-Speechmatics, Kraken, Featherless, Vultr, Coolify, Streamlit, LangGraph, xStocks, Trading Agent, Voice AI, Enterprise AI, Multimodal Intelligence, Agentic Workflow, Python
+Speechmatics, Kraken, Featherless, Streamlit, LangGraph, xStocks, Trading Agent, Voice AI, Enterprise AI, Multimodal Intelligence, Agentic Workflow, Python
 
 ## Demo Video Script
 
@@ -26,7 +26,7 @@ Speechmatics, Kraken, Featherless, Vultr, Coolify, Streamlit, LangGraph, xStocks
 
 105-135s: Show the paper PnL chart and decision log updating.
 
-135-150s: Close with deployment: open-source, MIT licensed, deployed on Vultr with Coolify, built for Speechmatics, Kraken, Featherless, and Vultr prizes.
+135-150s: Close with deployment: open-source, MIT licensed, deployed free on Streamlit Community Cloud, built for Speechmatics, Kraken, and Featherless prizes.
 
 ## Social Posts
 
@@ -43,4 +43,4 @@ Day 4:
 First VoxCall Oracle paper execution demo: earnings-call signal to xStock order command, with PnL tracking in Streamlit. @krakenfx @lablabai @Surgexyz_
 
 Day 5:
-VoxCall Oracle is deployable on Vultr with Coolify: Streamlit dashboard, Speechmatics listener, Featherless ensemble, Kraken CLI execution. @krakenfx @lablabai @Surgexyz_
+VoxCall Oracle is live on Streamlit Community Cloud: Streamlit dashboard, Speechmatics listener, Featherless ensemble, Kraken CLI execution. @krakenfx @lablabai @Surgexyz_
