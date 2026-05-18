@@ -17,6 +17,14 @@ import plotly.graph_objs as go
 import streamlit as st
 import streamlit.components.v1 as components
 
+# Force Streamlit Cloud secrets into environment variables for API clients
+try:
+    for k, v in st.secrets.items():
+        if isinstance(v, str):
+            os.environ[k] = v
+except Exception:
+    pass
+
 from agents.ensemble import analyze_transcript
 from agents.executor import execute_decision
 from agents.explainer import explain_decision, format_vote_table
